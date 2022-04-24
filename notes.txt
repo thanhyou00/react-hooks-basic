@@ -1,0 +1,8 @@
+* Một vài extension hỗ trợ code ReactJs 
+- ReactJS Code Snippets 
+- SCSS Formatter
+
+* Một vài phím tắt (Visual Studio Code - 2022)
+
+- Tự động optimize và remove các import không sử dụng : Shift + Alt + o
+- Tạo nhanh một component mới : rsfp
