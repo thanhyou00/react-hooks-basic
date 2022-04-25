@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
+import queryString from 'query-string'
 import "./App.scss";
+import Pagination from "./components/Pagination";
 import PostList from "./components/PostList";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
+import PostFiltersForm from "./components/PostFiltersForm";
+import Clock from "./components/Clock";
+import BetterClock from "./components/BetterClock";
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -11,23 +16,42 @@ function App() {
     { id: 3, title: "React Native" },
   ]);
   const [postList, setPostList] = useState([]);
+  const [pagination, setPagination] = useState({
+    _page :1,
+    _limit : 10,
+    _totalRows : 1
+  });
+  const [filters, setFilters] = useState({
+    _limit : 10,
+    _page : 1
+  })
+  const [showClock, setShowClock] = useState(true)
   useEffect(() => {
     async function fetPostList() {
       try {
-        const requestUrl =
-          "http://js-post-api.herokuapp.com/api/posts?_limit=10&_page=1";
+        const paramString = queryString.stringify(filters); // convert object to string
+        const requestUrl =`http://js-post-api.herokuapp.com/api/posts?${paramString}`;
         const response = await fetch(requestUrl);
         const responseJSON = await response.json();
         console.log({ responseJSON });
 
-        const { data } = responseJSON;
+        const { data, pagination } = responseJSON;
         setPostList(data);
+        setPagination(pagination);
       } catch (error) {
         console.log('Failed to fetch post list', error.message);
       }
     }
     fetPostList();
-  },[]);
+  },[filters]);
+
+  function handlePageChange(newPage){
+    console.log('New page : ', newPage);
+    setFilters({
+      ...filters,
+      _page : newPage
+    })
+  }
   function handleClickTodo(todo) {
     const index = todoList.findIndex((x) => x.id === todo.id);
     if (index < 0) return;
@@ -47,13 +71,27 @@ function App() {
     newTodoList.push(newTodo);
     setTodoList(newTodoList);
   }
+  function handleFilterChange(newFilters) {
+    console.log('New filters : ', newFilters);
+    setFilters({
+      ...filters,
+      _page :1,
+      title_like: newFilters.searchTern,
+    })
+  }
+
 
   return (
     <div className="app">
       <h1>ReactJS hooks - PostList</h1>
+      {showClock && <Clock />}
+      <BetterClock />
+      <button onClick={()=>setShowClock(!showClock)}>Show/Hide Clock</button>
       {/* <TodoForm onSubmit={handleTodoFormSubmit} />
       <TodoList todos={todoList} onTodoClick={handleClickTodo} /> */}
+      <PostFiltersForm onSubmit={handleFilterChange} />
       <PostList posts={postList} />
+      <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
 }

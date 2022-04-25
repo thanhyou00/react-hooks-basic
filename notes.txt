@@ -6,3 +6,4 @@
 
 - Tự động optimize và remove các import không sử dụng : Shift + Alt + o
 - Tạo nhanh một component mới : rsfp
+- PropTypes.func : ptf
