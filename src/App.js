@@ -8,6 +8,9 @@ import TodoList from "./components/TodoList";
 import PostFiltersForm from "./components/PostFiltersForm";
 import Clock from "./components/Clock";
 import BetterClock from "./components/BetterClock";
+import MagicBox from "./components/MagicBox";
+import Hero from "./components/Hero";
+import Counter from "./components/Count";
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -80,18 +83,27 @@ function App() {
     })
   }
 
+  const [count, setCount] = useState(0)
+  const handleHeroClick = () => {
+
+  }
 
   return (
     <div className="app">
       <h1>ReactJS hooks - PostList</h1>
-      {showClock && <Clock />}
-      <BetterClock />
-      <button onClick={()=>setShowClock(!showClock)}>Show/Hide Clock</button>
+      {/* {showClock && <Clock />} 
+      <BetterClock /> <br />
+      <MagicBox />
+      <button onClick={()=>setShowClock(!showClock)}>Show/Hide Clock</button> */}
       {/* <TodoForm onSubmit={handleTodoFormSubmit} />
       <TodoList todos={todoList} onTodoClick={handleClickTodo} /> */}
-      <PostFiltersForm onSubmit={handleFilterChange} />
+      {/* <PostFiltersForm onSubmit={handleFilterChange} />
       <PostList posts={postList} />
-      <Pagination pagination={pagination} onPageChange={handlePageChange} />
+      <Pagination pagination={pagination} onPageChange={handlePageChange} /> */}
+      <p>{count}</p>
+      <button onClick={()=>{setCount(count+1)}}>Increase</button>
+      <Hero name="Easy frontend" onClick={handleHeroClick} />
+      <Counter />
     </div>
   );
 }
